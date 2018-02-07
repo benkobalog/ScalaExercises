@@ -5,16 +5,49 @@ object OptionParser {
   sealed trait Settings
   case class Min(underlying: Int) extends Settings
   case class Max(underlying: Int) extends Settings
-  case class Count(underlying: Int) extends Settings
   case class Error(msg: String) extends Settings
   case object Help extends Settings {
     val helpText =
-      """
-        |This should be helpful
+      """|Options:
+        |
+        |-h, --help
+        |  Print help text
+        |
+        |-i, --min
+        |  Lower bound for random generation
+        |
+        |-a, --max
+        |  Upper bound for random generation
+        |
+        |-c, --count
+        |  Quantity of numbers generated
+        |
       """.stripMargin
   }
+  class Count(val underlying: Int) extends Settings {
+    override def toString: String = s"Count($underlying)"
 
-  // TODO 
+    override def hashCode(): Int = {
+      val state = Seq(underlying)
+      state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+    }
+
+    def canEqual(other: Any): Boolean = other.isInstanceOf[Count]
+
+    override def equals(other: Any): Boolean = other match {
+      case that: Count =>
+        (that canEqual this) &&
+          underlying == that.underlying
+      case _ => false
+    }
+  }
+
+  object Count {
+    def apply(underlying: Int): Count = new Count(underlying)
+
+    def unapply(arg: Count): Option[Int] = Some(arg.underlying)
+  }
+  // TODO
   def run(args: List[String]): List[Settings] = {
     def isInt(s: String) = Try(s.toInt).isSuccess
     args match {

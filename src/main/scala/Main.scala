@@ -1,3 +1,8 @@
 object Main extends App {
-  println(CustomRandom(-123, 100, 3).nextInts())
+
+  override def main(args: Array[String]): Unit = {
+    println(args.toList)
+    val settings = OptionParser.run(args.toList)
+    println(CustomRandom.fromSet(settings).nextInts())
+  }
 }
