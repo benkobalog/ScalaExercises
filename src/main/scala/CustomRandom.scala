@@ -19,12 +19,6 @@ object CustomRandom {
     *         None when settings.isHelp is true
     *         When either settings.max or settings.min is None use the corresponding defaultMax or defaultMin value
     */
-  def run(settings: Setting): Option[Int] = settings match {
-    case Setting(_, _, true)              => println(Setting.helpText); None
-    case Setting(None, Some(max), _)      => nextInt(defaultMin, max)
-    case Setting(Some(min), None, _)      => nextInt(min, defaultMax)
-    case Setting(Some(min), Some(max), _) => nextInt(min, max)
-    case Setting(None, None, _)           => nextInt(defaultMin, defaultMax)
-  }
+  def run(settings: Setting): Option[Int] = ???
 
 }
