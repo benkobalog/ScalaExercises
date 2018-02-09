@@ -6,13 +6,13 @@ object SettingsParser {
     def unapply(arg: String): Option[Int] = Try(arg.toInt).toOption
   }
 
-  def apply(args: List[String]): List[Setting] = {
+  def apply(args: List[String]): Setting = {
     args match {
-      case ("-h" | "--help") :: tail => Help :: apply(tail)
-      case ("-i" | "--min") :: intFromString(number) :: tail => Min(number) :: apply(tail)
-      case ("-a" | "--max") :: intFromString(number) :: tail => Max(number) :: apply(tail)
-      case Nil       => Nil
-      case x :: tail => Error(x) :: apply(tail)
+      case ("-h" | "--help") :: tail => apply(tail).copy(isHelp = true)
+      case ("-i" | "--min") :: intFromString(number) :: tail => apply(tail).copy(min = Some(number))
+      case ("-a" | "--max") :: intFromString(number) :: tail => apply(tail).copy(max = Some(number))
+      case Nil       => Setting.Empty
+      case x :: _ => throw new IllegalArgumentException(x)
     }
   }
 }

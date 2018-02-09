@@ -1,9 +1,9 @@
-sealed trait Setting
-case class Min(underlying: Int) extends Setting
-case class Max(underlying: Int) extends Setting
-case class Error(msg: String) extends Setting
-case object Help extends Setting {
-  val helpText =
+case class Setting(min: Option[Int], max: Option[Int], isHelp: Boolean)
+
+object Setting {
+  val Empty = new Setting(None, None, false)
+
+  val helpText: String =
     """|Options:
        |-h, --help
        |  Print help text
@@ -15,3 +15,5 @@ case object Help extends Setting {
        |  Upper bound for random generation
     """.stripMargin
 }
+
+
