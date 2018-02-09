@@ -1,4 +1,6 @@
 ## Pattern Matching
+![gif.gif](gif.gif)
+
 You can meet pattern matching at two places:
 
 Match expression:
