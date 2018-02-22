@@ -7,7 +7,8 @@ This unstable behaviour will be represented with the Option data type.
 When the input program can understand the speaker it will return ```Some[String]``` 
 when it couldn't it will return ```None```.
 
-The machine has 2 inputs. 
+The machine has 2 inputs. (The input are weird because the inventor of the machine
+wants to show how Scala monads work)
 * ```firstNumber: Option[Int]``` which can be a number from 0 to 9
 * ```predicate: Option[String]``` which will contain the rest of the sentence. eg: "is bigger than 8". 
 _Note that the second number has to be extracted from this String and is also a number from 0 to 9!_
