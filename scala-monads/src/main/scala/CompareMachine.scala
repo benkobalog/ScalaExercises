@@ -8,23 +8,23 @@ object CompareMachine {
   private val greaterThanWords = List("bigger", "greater")
   private val lowerThanWords = List("lower", "smaller")
 
-  def compare(numberFromAudio: Option[Int],
-              predicateFromAudio: Option[String]): Either[String, Boolean] =
+  def isCorrect(numberFromAudio: Option[Int],
+                predicateFromAudio: Option[String]): Either[String, Boolean] =
     for {
       firstNum <- numberFromAudio.toRight("Repeat the first number please!")
       predicate <- predicateFromAudio.toRight("Repeat the predicate please!")
       secondNum <- extractNumberFromPredicate(predicate)
       hasBigger = greaterThanWords.exists(predicate contains _)
       hasLower = lowerThanWords.exists(predicate contains _)
-      askBigger <- checkPredicate(hasBigger, hasLower)
+      firstBigger <- isBigger(hasBigger, hasLower)
     } yield
-      if (askBigger)
+      if (firstBigger)
         firstNum > secondNum
       else
         firstNum < secondNum
 
-  private def checkPredicate(hasBigger: Boolean,
-                             hasLower: Boolean): Either[String, Boolean] =
+  private def isBigger(hasBigger: Boolean,
+                       hasLower: Boolean): Either[String, Boolean] =
     (hasBigger, hasLower) match {
       case (true, true)   => Left("Lower or bigger?")
       case (false, false) => Left("You need to specify a relation!")
