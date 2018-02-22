@@ -1,4 +1,4 @@
-object CompareMachine {
+object CompareMachine extends CompareMachineService {
   def showResult(result: Either[String, Boolean]): String =
     result match {
       case Right(res)         => if (res) "Correct" else "Incorrect"
