@@ -19,16 +19,9 @@ object CompareMachine {
       askBigger <- checkPredicate(hasBigger, hasLower)
     } yield
       if (askBigger)
-        if (firstNum > secondNum)
-          true
-        else
-          false
-      else {
-        if (firstNum < secondNum)
-          true
-        else
-          false
-      }
+        firstNum > secondNum
+      else
+        firstNum < secondNum
 
   private def checkPredicate(hasBigger: Boolean,
                              hasLower: Boolean): Either[String, Boolean] =
