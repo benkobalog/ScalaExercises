@@ -111,7 +111,7 @@ When used for error handling monads have a so called __fail fast__ behaviour.
 ![imageff1](https://image.slidesharecdn.com/railway-oriented-programming-slideshare-140312155941-phpapp01/95/railway-oriented-programming-78-638.jpg?cb=1427456657)
 
 Option, Either(v2.12), Try and Future works this way. (The 
-exception is List and Either(v2.11))
+exceptions are List and Either(v2.11))
 
 ```scala
 val validatedObject: Try[Object1] = 
