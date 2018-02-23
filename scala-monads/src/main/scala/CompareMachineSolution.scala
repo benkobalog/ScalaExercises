@@ -1,4 +1,5 @@
 import scala.util.{Success, Try, Failure}
+import OptionOps._
 
 object CompareMachineSolution {
   private val greaterThanWords = List("bigger", "greater")
@@ -10,7 +11,7 @@ object CompareMachineSolution {
       case Failure(error) => error.getMessage
     }
 
-  def getRelation(predicate: String): Try[Relation] = {
+  private def getRelation(predicate: String): Try[Relation] = {
     val hasGreater = greaterThanWords.exists(predicate.contains)
     val hasLess = lessThanWords.exists(predicate.contains)
 
@@ -22,7 +23,7 @@ object CompareMachineSolution {
     }
   }
 
-  def extractNum(predicate: String): Try[Int] =
+  private def extractNum(predicate: String): Try[Int] =
     predicate
       .find(_.isDigit)
       .map(_.asDigit)
@@ -40,12 +41,4 @@ object CompareMachineSolution {
         case Greater => firstNum > secondNum
         case Less    => secondNum > firstNum
       }
-
-  implicit class OptionOps[A](option: Option[A]) {
-    def toTry(failure: Throwable): Try[A] =
-      option match {
-        case Some(v) => Success(v)
-        case None    => Failure(failure)
-      }
-  }
 }
