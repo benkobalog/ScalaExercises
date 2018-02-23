@@ -1,6 +1,6 @@
 ![image0](https://image.slidesharecdn.com/monadicjava-forpdf-131109061340-phpapp02/95/monadic-java-4-638.jpg?cb=1455559018)
 
-## Algebraic Data Type
+### Algebraic Data Type
 
 An ADT consists of a combination of _Sum Types_ and _Product Types_.
 
@@ -12,17 +12,17 @@ case class ProductType2(a: Int, b: String, c: Int, d: Long) extends MySumType
 ```
 
 ```scala
+// Simplified versions of some Scala ADTs
 sealed trait Option[A]
 case class Some[A](value: A) extends Option[A]
 case object None extends Option[Nothing]
-
 
 sealed trait Either[A, B] 
 case class Right[A, B](value: A) extends Either[A, B]
 case class Left[A, B](value: B) extends Either[A, B]
 ```
 
-## Monads in Scala Standard Library
+### Monads in Scala Standard Library
   * Option
   * Either
   * Try
@@ -48,6 +48,23 @@ final def map[B](f: A => B): Option[B] = ???
 ![image2](https://porizi.files.wordpress.com/2014/02/flatmap.png)
 
 
+#### Examples
+```scala
+def f(x: Option[Int]): Option[String] = x match {
+  case Some(v) => Some(v.toString)
+  case None => None
+}
+
+def fWithMap(x: Option[Int]) = x.map(_.toString)
+
+List(1, 2, 3, 4).map(x => x + 3)
+
+def fWithATwist(x: Option[Int]) = 
+  x.flatMap(x => if(x > 10) Some(x.toString) else None)
+
+```
+
+
 #### For Comprehension
 
 For Comprehension is just syntactic sugar. It is transformed to map or flatMap (or filter or foreach) calls.
@@ -62,7 +79,7 @@ for {
 // List[(Int, Int)] = List((0,0), (0,1), (1,0), (1,1))
 ```
 
-### Fail Fast
+#### Fail Fast
 When used for error handling monads have a so called __fail fast__ behaviour.
 
 ![imageff1](https://image.slidesharecdn.com/railway-oriented-programming-slideshare-140312155941-phpapp01/95/railway-oriented-programming-74-638.jpg?cb=1427456657)
