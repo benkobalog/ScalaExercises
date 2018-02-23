@@ -3,6 +3,10 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 
 class CompareMachineSpec extends FlatSpec with Matchers {
 
+  import scala.util.{Success, Failure, Try}
+
+  private val compareMachine = CompareMachineTry
+
   "CompareMachine" should "return true" in {
     val corrects = Table(
       ("firstNum", "predicate"),
@@ -13,7 +17,7 @@ class CompareMachineSpec extends FlatSpec with Matchers {
     )
 
     forAll(corrects) { (int: Option[Int], str: Option[String]) =>
-      CompareMachine.isCorrect(int, str) should be(Right(true))
+      compareMachine.isCorrect(int, str) should be(Success(true))
     }
   }
 
@@ -27,7 +31,7 @@ class CompareMachineSpec extends FlatSpec with Matchers {
     )
 
     forAll(incorrects) { (int: Option[Int], str: Option[String]) =>
-      CompareMachine.isCorrect(int, str) should be(Right(false))
+      compareMachine.isCorrect(int, str) should be(Success(false))
     }
   }
 
@@ -42,7 +46,7 @@ class CompareMachineSpec extends FlatSpec with Matchers {
     )
 
     forAll(errorsT) { (int: Option[Int], str: Option[String]) =>
-      CompareMachine.isCorrect(int, str).isLeft should be(true)
+      compareMachine.isCorrect(int, str).isFailure should be(true)
     }
   }
 }

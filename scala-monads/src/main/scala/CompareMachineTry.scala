@@ -4,7 +4,7 @@ sealed trait Relation
 case object Greater extends Relation
 case object Less extends Relation
 
-class CompareMachineTry {
+object CompareMachineTry {
   private val greaterThanWords = List("bigger", "greater")
   private val lessThanWords = List("less", "lower", "smaller")
 
@@ -21,8 +21,8 @@ class CompareMachineTry {
     (hasGreater, hasLess) match {
       case (true, true)   => Failure(new Exception("Found both less and greater"))
       case (false, false) => Failure(new Exception("Found no less or greater"))
-      case (false, true)  => Success(Greater)
-      case (true, false)  => Success(Less)
+      case (true, false)  => Success(Greater)
+      case (false, true)  => Success(Less)
     }
   }
 
@@ -46,10 +46,11 @@ class CompareMachineTry {
         case Less    => secondNum > firstNum
       }
 
-  implicit class OptionOps[A](a: Option[A]) {
-    def toTry(failure: Throwable): Try[A] = {
-      case Some(v) => Success(v)
-      case None    => Failure(failure)
-    }
+  implicit class OptionOps[A](option: Option[A]) {
+    def toTry(failure: Throwable): Try[A] =
+      option match {
+        case Some(v) => Success(v)
+        case None    => Failure(failure)
+      }
   }
 }

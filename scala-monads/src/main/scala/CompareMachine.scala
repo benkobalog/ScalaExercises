@@ -6,7 +6,7 @@ object CompareMachine extends CompareMachineService {
     }
 
   private val greaterThanWords = List("bigger", "greater")
-  private val lowerThanWords = List("lower", "smaller")
+  private val lessThanWords = List("less", "lower", "smaller")
 
   def isCorrect(numberFromAudio: Option[Int],
                 predicateFromAudio: Option[String]): Either[String, Boolean] =
@@ -15,7 +15,7 @@ object CompareMachine extends CompareMachineService {
       predicate <- predicateFromAudio.toRight("Repeat the predicate please!")
       secondNum <- extractNumberFromPredicate(predicate)
       hasBigger = greaterThanWords.exists(predicate contains _)
-      hasLower = lowerThanWords.exists(predicate contains _)
+      hasLower = lessThanWords.exists(predicate contains _)
       firstBigger <- isBigger(hasBigger, hasLower)
     } yield
       if (firstBigger)
