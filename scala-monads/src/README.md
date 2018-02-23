@@ -11,7 +11,9 @@ The machine has 2 inputs. (The input are weird because the inventor of the machi
 wants to show how Scala monads work)
 * ```firstNumber: Option[Int]``` which can be a number from 0 to 9
 * ```predicate: Option[String]``` which will contain the rest of the sentence. eg: "is bigger than 8". 
-_Note that the second number has to be extracted from this String and is also a number from 0 to 9!_
+    * The second number has to be extracted from this String and is also a number from 0 to 9
+    * There are two lists ```lessThanWords``` and ```greaterThanWords```, these contain the words which you have to find in the predicate
+    * The order of the number and relation words doesn't matter
 
 The output will be either an error message if something didn't make sense 
 or the correctness of the statement.
