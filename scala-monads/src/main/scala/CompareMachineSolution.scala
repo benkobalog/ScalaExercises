@@ -9,7 +9,6 @@ object CompareMachineSolution {
     result match {
       case Success(v)     => if (v) "Correct" else "Incorrect"
       case Failure(error) => error.getMessage
-        Option().flatMap()
     }
 
   private def getRelation(predicate: String): Try[Relation] = {
