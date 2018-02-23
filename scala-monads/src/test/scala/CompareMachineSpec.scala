@@ -5,7 +5,7 @@ class CompareMachineSpec extends FlatSpec with Matchers {
 
   import scala.util.{Success, Failure, Try}
 
-  private val compareMachine = CompareMachineTry
+  private val compareMachine = CompareMachineSolution
 
   "CompareMachine" should "return true" in {
     val corrects = Table(
