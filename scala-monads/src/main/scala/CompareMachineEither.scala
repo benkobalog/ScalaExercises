@@ -1,4 +1,4 @@
-object CompareMachine extends CompareMachineService {
+object CompareMachineEither {
   def showResult(result: Either[String, Boolean]): String =
     result match {
       case Right(res)         => if (res) "Correct" else "Incorrect"
@@ -14,9 +14,9 @@ object CompareMachine extends CompareMachineService {
       firstNum <- numberFromAudio.toRight("Repeat the first number please!")
       predicate <- predicateFromAudio.toRight("Repeat the predicate please!")
       secondNum <- extractNumberFromPredicate(predicate)
-      hasBigger = greaterThanWords.exists(predicate contains _)
-      hasLower = lessThanWords.exists(predicate contains _)
-      firstBigger <- isBigger(hasBigger, hasLower)
+      hasGreater = greaterThanWords.exists(predicate contains _)
+      hasLess = lessThanWords.exists(predicate contains _)
+      firstBigger <- isBigger(hasGreater, hasLess)
     } yield
       if (firstBigger)
         firstNum > secondNum
@@ -31,10 +31,9 @@ object CompareMachine extends CompareMachineService {
       case _              => Right(hasBigger)
     }
 
-  private def extractNumberFromPredicate(predicate: String) = {
+  private def extractNumberFromPredicate(predicate: String) =
     predicate
       .find(_.isDigit)
       .map(_.asDigit)
       .toRight("Cannot find a number in the predicate!")
-  }
 }

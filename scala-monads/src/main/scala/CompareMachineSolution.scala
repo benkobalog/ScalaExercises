@@ -1,9 +1,5 @@
 import scala.util.{Success, Try, Failure}
 
-sealed trait Relation
-case object Greater extends Relation
-case object Less extends Relation
-
 object CompareMachineSolution {
   private val greaterThanWords = List("bigger", "greater")
   private val lessThanWords = List("less", "lower", "smaller")
