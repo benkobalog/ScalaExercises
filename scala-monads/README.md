@@ -22,6 +22,31 @@ case class Right[A, B](value: A) extends Either[A, B]
 case class Left[A, B](value: B) extends Either[A, B]
 ```
 
+### Adding methods to ADTs
+```scala
+// Polymorphism 
+sealed trait Option[A] {
+  def isDefined: Boolean
+}
+case class Some[A](value: A) extends Option[A] {
+  def isDefined = true
+}
+case object None extends Option[Nothing] {
+  def isDefined = false
+}
+
+// Pattern Matching in the Trait
+sealed trait Option[A] {
+  def isDefined: Boolean = this match {
+    case Some(_) => true
+    case None => false
+  }
+}
+case class Some[A](value: A) extends Option[A] 
+case object None extends Option[Nothing]
+```
+
+
 ### Monads in Scala Standard Library
   * Option
   * Either
