@@ -122,8 +122,8 @@ val validatedObject: Try[Object1] =
     } yield object1
 // Or
 val validatedObject: Try[Object1] = 
-    object1.map{ obj =>
-      updateDb(obj).map{ _ => 
+    object1.flatMap{ obj =>
+      updateDb(obj).flatMap{ _ => 
         sendMail(obj).map{ _ =>
           obj
         }
