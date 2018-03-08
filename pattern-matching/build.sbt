@@ -1,4 +1,4 @@
-name := "RandomStuff"
+name := "PatternMatching"
 
 version := "0.1"
 
@@ -10,6 +10,5 @@ val http4sVersion = "0.18.0"
 val LogbackVersion = "1.2.3"
 
 libraryDependencies ++= Seq(
-  "ch.qos.logback" % "logback-classic" % LogbackVersion,
-  "com.chuusai" %% "shapeless" % "2.3.3"
+  "ch.qos.logback" % "logback-classic" % LogbackVersion
 )
