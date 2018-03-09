@@ -1,6 +1,4 @@
 object PipeOps {
+  // Implement pipe operator here
 
-  implicit class Pipe[A](a: A) {
-    def |>[B](f: A => B): B = f(a)
-  }
 }
