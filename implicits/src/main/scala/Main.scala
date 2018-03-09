@@ -33,6 +33,8 @@ object Main extends App {
   /*  Task 3
   *  A) Change the exclamationMarks to "!" in the JSON object
   *  B) Put a "Greeting" : ... wrapper object around the greeting object
+  *
+  *  Circe documentation: https://circe.github.io/circe/codec.html
   */
 
 //  import io.circe.generic.auto._, io.circe.syntax._
