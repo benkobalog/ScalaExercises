@@ -9,7 +9,7 @@ Our building blocks:
 
 * Implicit conversions (class and function)
 ```scala
- implicit def option2Iterable[A](xo: Option[A]): Iterable[A] = xo.toList
+implicit def option2Iterable[A](xo: Option[A]): Iterable[A] = xo.toList
 
 implicit class OptionConverter[A](option: Option[A]) {
   def toTry(failure: Throwable): Try[A] =
