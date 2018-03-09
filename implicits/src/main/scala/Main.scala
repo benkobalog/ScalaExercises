@@ -6,13 +6,17 @@ import testmodels._
 
 object Main extends App {
 
-//// Task 1
+  /* Task 1
+  * Implement a pipe operator "|>" and try it on the example below or on other examples you'd like */
 
 //  import PipeOps._
 //  val res = "Mqtpmgmxw$evi$gssp%" |> (_.map(x => (x - 4).toChar))
 //  println(res)
 
-//// Task 2
+  /* Task 2
+  * Implement a Json converter for Anonymous and User types
+  * (the solution is in VisitorTypeClassInstances)
+  * */
 
 //  // Here are the solutions for Anonymous and User
 //  //  import testmodels.VisitorTypeClassInstances._
@@ -25,7 +29,11 @@ object Main extends App {
 //  val b = User("2", "test@test.com").toJson
 //  println(b.stringify)
 
-//// Task 3
+
+  /*  Task 3
+  *  A) Change the exclamationMarks to "!" in the JSON object
+  *  B) Put a "Greeting" : ... wrapper object around the greeting object
+  */
 
 //  import io.circe.generic.auto._, io.circe.syntax._
 //
@@ -35,7 +43,8 @@ object Main extends App {
 //  val res = Greeting("Hey", Person("Chris"), 3).asJson
 //  println(res.toString())
 
-//// Task 4
+  /* Task 4
+  * Use Circe for Visitor types (the error messages will be tricky, feel free to ask) */
 
 //  import testmodels._
 //  val res2 = Anonymous("1").asJson
