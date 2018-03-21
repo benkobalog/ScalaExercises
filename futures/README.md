@@ -63,18 +63,15 @@ for {
   c <- Future(3)
 } yield a + b + c
 
-// desugars to:
-
+// Desugars to (the second one only starts after the first returned):
 Future(1)
-  .flatMap(
-    a =>
-      Future(2)
-        .flatMap(b =>
-          Future(3)
-            .map(c => a + b + c)))
+  .flatMap( a =>
+    Future(2)
+     .flatMap(b =>
+       Future(3).map(c => a + b + c)))
             
 // Do this instead:
-val aF = Future(1)
+val aF = Future(1) // These 3 will start executing immediately
 val bF = Future(2)
 val cF = Future(3)
 for {
