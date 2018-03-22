@@ -85,3 +85,10 @@ aF.flatMap(a =>
   bF.flatMap(b =>
     cF.map(c => a + b + c)))
 ```
+
+
+
+#### Resources
+
+1. https://www.beyondthelines.net/computing/scala-future-and-execution-context/
+2. https://www.credera.com/blog/credera-site/mastering-scala-futures/
