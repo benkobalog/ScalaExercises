@@ -2,17 +2,12 @@ package scraper
 
 import java.io.{BufferedOutputStream, FileOutputStream}
 
-import com.softwaremill.sttp._
-import com.softwaremill.sttp.asynchttpclient.future.AsyncHttpClientFutureBackend
-
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import Helpers._
+import http.Client._
 
 object Download {
-
-  implicit val backend: SttpBackend[Future, Nothing] =
-    AsyncHttpClientFutureBackend()
 
   private def stringToFilename(url: String) =
     url.replaceAll("[\"*/:<>?|]", "").replace("\\", "")
@@ -31,8 +26,8 @@ object Download {
   // Feel free to change the return type inside Future
   def downloadImages(links: Set[String]): Future[Unit] = {
     val linkDownloads = links.map { link =>
-      val img = sttp.get(uri"$link").response(asByteArray).send()
-      img
+      val imgBytes = getAsByteArray(link)
+      imgBytes
         .flatMap { response =>
           debug(s"Downloading: $link ...")
           response.body match {
@@ -46,7 +41,7 @@ object Download {
   }
 
   def downloadPage(url: String): Future[String] = {
-    val response = sttp.get(uri"$url").response(asString).send()
+    val response = getAsString(url)
     response.map { r =>
       r.body.fold(identity, identity)
     }
