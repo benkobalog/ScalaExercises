@@ -2,20 +2,19 @@ package scraper
 
 import java.io.{BufferedOutputStream, FileOutputStream}
 
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import Helpers._
 import http.Client._
-import scraper.Helpers._
 import scraper.Links.extractJpgUrls
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
-object DownloadSolution {
+object Download {
 
   private def stringToFilename(url: String) =
     url.replaceAll("[\"*/:<>?|]", "").replace("\\", "")
 
   private def writeArrayOfBytesToFile(url: String)(
-      byteArray: Array[Byte]): Future[Unit] = Future {
+    byteArray: Array[Byte]): Future[Unit] = Future {
     val folder = "images"
     val filename = stringToFilename(url)
     debug(s"Writing $url to $filename")
@@ -27,11 +26,11 @@ object DownloadSolution {
 
   def downloadImages(links: Set[String]): Future[Set[Unit]] = {
     Future.traverse(links) { link =>
-      val imgBytes = getAsByteArray(link)
+      val imgBytes = getAsByteArray(link).map(_.body)
       imgBytes
-        .flatMap { response =>
+        .flatMap { body =>
           debug(s"Downloading: $link ...")
-          response.body match {
+          body match {
             case Right(bytes) => Future.successful(bytes)
             case Left(error)  => Future.failed(new Exception(error))
           }
@@ -47,14 +46,14 @@ object DownloadSolution {
     debug(s"Page: $url")
     for {
       htmlContent <- downloadPage(url)
-      jpgUrls <- extractJpgUrls(htmlContent)
-      imageLinks <- {
-        if (jpgUrls.nonEmpty && traverseDepth > 0)
-          getAllJpgUrls(genUrl, traverseDepth - 1, urls ++ jpgUrls)
+      currentUrls <- extractJpgUrls(htmlContent)
+      allUrls <- {
+        if (currentUrls.nonEmpty && traverseDepth > 0)
+          getAllJpgUrls(genUrl, traverseDepth - 1, urls ++ currentUrls)
         else
           Future.successful(urls)
       }
-    } yield imageLinks
+    } yield allUrls
   }
 
   def downloadPage(url: String): Future[String] = {

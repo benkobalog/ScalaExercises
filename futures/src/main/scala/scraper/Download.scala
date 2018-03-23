@@ -26,11 +26,11 @@ object Download {
 
   def downloadImages(links: Set[String]): Future[Set[Unit]] = {
     Future.traverse(links) { link =>
-      val imgBytes = getAsByteArray(link)
+      val imgBytes = getAsByteArray(link).map(_.body)
       imgBytes
-        .flatMap { response =>
+        .flatMap { body =>
           debug(s"Downloading: $link ...")
-          response.body match {
+          body match {
             case Right(bytes) => Future.successful(bytes)
             case Left(error)  => Future.failed(new Exception(error))
           }
@@ -46,14 +46,14 @@ object Download {
     debug(s"Page: $url")
     for {
       htmlContent <- downloadPage(url)
-      jpgUrls <- extractJpgUrls(htmlContent)
-      imageLinks <- {
-        if (jpgUrls.nonEmpty && traverseDepth > 0)
-          getAllJpgUrls(genUrl, traverseDepth - 1, urls ++ jpgUrls)
+      currentUrls <- extractJpgUrls(htmlContent)
+      allUrls <- {
+        if (currentUrls.nonEmpty && traverseDepth > 0)
+          getAllJpgUrls(genUrl, traverseDepth - 1, urls ++ currentUrls)
         else
           Future.successful(urls)
       }
-    } yield imageLinks
+    } yield allUrls
   }
 
   def downloadPage(url: String): Future[String] = {
