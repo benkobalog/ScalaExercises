@@ -21,9 +21,6 @@ Otherwise we can compose computations with callbacks or in a monadic way
 with map, flatMap.
 
 
-
-
-
 ### Future's different constructors
 ```scala
 import concurrent.Future
@@ -42,20 +39,7 @@ Future(Success(expr))
 Future(Failure(new Exception()))
 ```
 
-### ExecutionContext
-
-```scala
-import concurrent.ExecutionContext.Implicits.global
-```
-For CPU intensive tasks.
-
-It's usually recommended to use a different thread pool for IO
-eg: Slick has an own thread pool
-
-
-### Things to avoid
-
-1. Calling Future.apply inside a for comprehension
+### Calling Future.apply inside a for comprehension
 ```scala
 for {
   a <- Future(1)
@@ -86,9 +70,8 @@ aF.flatMap(a =>
     cF.map(c => a + b + c)))
 ```
 
-
-
 #### Resources
 
 1. https://www.beyondthelines.net/computing/scala-future-and-execution-context/
 2. https://www.credera.com/blog/credera-site/mastering-scala-futures/
+3. http://danielwestheide.com/blog/2013/01/09/the-neophytes-guide-to-scala-part-8-welcome-to-the-future.html
