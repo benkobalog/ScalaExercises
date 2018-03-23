@@ -9,5 +9,4 @@ object Links {
     println(s"Extacted ${urls.size} urls")
     Future.successful(urls)
   }
-
 }
