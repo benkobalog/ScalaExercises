@@ -7,6 +7,6 @@ object Links {
     val jpgUrlR = """https?:\/\/.*\.jpg""".r
     val urls = jpgUrlR.findAllIn(html).toSet
     println(s"Extacted ${urls.size} urls")
-    Future.successful(urls)
+    ???
   }
 }
