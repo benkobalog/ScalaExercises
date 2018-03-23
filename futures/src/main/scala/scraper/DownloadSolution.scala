@@ -8,7 +8,7 @@ import Helpers._
 import http.Client._
 import scraper.Links.extractJpgUrls
 
-object Download {
+object DownloadSolution {
 
   private def stringToFilename(url: String) =
     url.replaceAll("[\"*/:<>?|]", "").replace("\\", "")
