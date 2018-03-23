@@ -2,13 +2,14 @@ package scraper
 
 import java.io.{BufferedOutputStream, FileOutputStream}
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-import Helpers._
 import http.Client._
+import scraper.Helpers._
 import scraper.Links.extractJpgUrls
 
-object Download {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+object DownloadSolution {
 
   private def stringToFilename(url: String) =
     url.replaceAll("[\"*/:<>?|]", "").replace("\\", "")

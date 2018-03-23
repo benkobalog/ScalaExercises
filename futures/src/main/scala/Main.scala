@@ -5,26 +5,23 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scraper.Helpers._
 import scraper.Links._
-import scraper.Download._
+import scraper.DownloadSolution._
 
 object Main {
   println("number of cpus: " + Runtime.getRuntime.availableProcessors())
 
   def main(args: Array[String]): Unit = {
 
-    def generateUrl = {
-      var id = 0
-      def gen() = {
-        id += 1
-        "http://portfotolio.net/medvekoma?page=" + id
-      }
-      gen _
-    }
+    val urls = getAllJpgUrls(generateUrl, traverseDepth = 1, Set())
+    val downloadFuture = urls.flatMap(downloadImages)
 
-    val allJpgUrls = getAllImgs(generateUrl, 1, Set())
-    val downloadedImages = allJpgUrls.flatMap(downloadImages)
+//   // Alternatively:
+//    val downloadFuture = for {
+//      urls <- getAllJpgUrls(generateUrl, traverseDepth = 1, Set())
+//      _ <- downloadImages(urls)
+//    } yield urls
 
-    val result = Await.result(downloadedImages, 10.seconds)
+    val result = Await.result(downloadFuture, 10.seconds)
     debug("Last Future result: " + result)
 
     Client.backend.close()

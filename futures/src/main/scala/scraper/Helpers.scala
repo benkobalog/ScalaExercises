@@ -16,4 +16,13 @@ object Helpers {
     val thread = Thread.currentThread.getName()
     println(s"$now [$thread] $message")
   }
+
+  def generateUrl: () => String = {
+    var id = 0
+    def gen() = {
+      id += 1
+      "http://portfotolio.net/medvekoma?page=" + id
+    }
+    gen
+  }
 }
