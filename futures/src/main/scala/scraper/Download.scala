@@ -6,6 +6,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import Helpers._
 import http.Client._
+import scraper.Links.extractJpgUrls
 
 object Download {
 
@@ -23,9 +24,8 @@ object Download {
     bos.close()
   }
 
-  // Feel free to change the return type inside Future
-  def downloadImages(links: Set[String]): Future[Unit] = {
-    val linkDownloads = links.map { link =>
+  def downloadImages(links: Set[String]): Future[Set[Unit]] = {
+    Future.traverse(links) { link =>
       val imgBytes = getAsByteArray(link)
       imgBytes
         .flatMap { response =>
@@ -37,7 +37,23 @@ object Download {
         }
         .flatMap(writeArrayOfBytesToFile(link))
     }
-    Future.sequence(linkDownloads).map(_ => ())
+  }
+
+  def getAllImgs(genUrl: () => String,
+                 goUntilZero: Int,
+                 urls: Set[String]): Future[Set[String]] = {
+    val url = genUrl()
+    debug(s"Page: $url")
+    for {
+      htmlContent <- downloadPage(url)
+      jpgUrls <- extractJpgUrls(htmlContent)
+      imageLinks <- {
+        if (jpgUrls.nonEmpty && goUntilZero > 0)
+          getAllImgs(genUrl, goUntilZero - 1, urls ++ jpgUrls)
+        else
+          Future.successful(urls)
+      }
+    } yield imageLinks
   }
 
   def downloadPage(url: String): Future[String] = {

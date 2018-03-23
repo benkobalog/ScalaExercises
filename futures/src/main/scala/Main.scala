@@ -21,24 +21,14 @@ object Main {
       gen _
     }
 
+    val allJpgUrls = getAllImgs(generateUrl, 1, Set())
+    val downloadedImages = allJpgUrls.flatMap(downloadImages)
 
-    def getAllImgs(genUrl:() => String, urls: Set[String]): Future[Set[String]] = {
-      val url = genUrl()
-      debug(s"Page: $url")
-      for {
-        htmlContent <- downloadPage(url)
-        jpgUrls <- extractJpgUrls(htmlContent)
-        res <- if (jpgUrls.nonEmpty) getAllImgs(genUrl, urls ++ jpgUrls) else Future.successful(urls)
-      } yield res
-    }
-
-    val allJpgUrls = getAllImgs(generateUrl, Set())
-//    val downloadedImages = allJpgUrls.flatMap(downloadImages)
-
-    val result = Await.result(allJpgUrls, 10.seconds)
-    println(result)
+    val result = Await.result(downloadedImages, 10.seconds)
+    debug("Last Future result: " + result)
 
     Client.backend.close()
+    debug("Closed http backend")
   }
 
 }
