@@ -14,13 +14,12 @@ object ExampleApp2 {
       }
     }
 
-    val eventualInt = () =>
-      Future {
+    def eventualInt =
+       {
         debug("something")
-        throw new Exception("Oo")
-        1
+        Future.failed(new Exception("Oo"))
     }
-    Await.result(retry(eventualInt(), 5), 1.minute)
+    Await.result(retry(eventualInt, 5), 1.minute)
 
   }
 }

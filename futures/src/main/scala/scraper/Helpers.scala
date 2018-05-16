@@ -12,7 +12,7 @@ object Helpers {
   def debug(message: String): Unit = {
     val now = java.time.format.DateTimeFormatter.ISO_INSTANT
       .format(java.time.Instant.now)
-      .substring(11, 23)
+//      .substring(11, 23)
     val thread = Thread.currentThread.getName()
     println(s"$now [$thread] $message")
   }

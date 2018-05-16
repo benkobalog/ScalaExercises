@@ -11,7 +11,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     def futureFn = {
       Future {
-        throw new Exception("We r fuk'd")
+        throw new Exception("Something bad")
         123
       }
     }
@@ -19,7 +19,7 @@ object Main {
     def normalFunction = {
 //
       Try {
-        throw new Exception("We r fuk'd")
+        throw new Exception("Something bad")
         123123
       }
     }
