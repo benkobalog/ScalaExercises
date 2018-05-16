@@ -1,29 +1,25 @@
-# Generic Programming Features in Scala
+# Advanced Types in Scala
 
-More advanced type features help us to write code which is more generic
-but still type safe (checked by the compiler). 
-The primary use of these features are in libraries, not in user/application code.
-However it's still useful to know about these at least when you are looking at library code.
-
-## Types of polymorphism
+## Polymorphism
+Polymorphism is the provision of a single interface to entities of different types.
 
 * Subtyping 
     * Method overriding
 * Parametric
     * "Generics"
     * We don't know anything about the type, so we can't use any of its properties
-* Bounded quantification
-    * Subtyping + Parametric, we might want to give constraints to our type parameters
-    * __Type bounds__
 * Ad-hoc
     * Each type can have its own implementation
     * __Type classes__
-
+* Bounded parametric
+    * We might require some properties for our types but otherwise they can be parametric
+    * __Type bounds__ = Subtyping + Parametric ```[A <: Comparable[A]]```
+    * __Context bounds__ = Ad-hoc + Parametric ```[A : Numeric]```
 
 ## Topics
+* Variance
 * Type Bounds
 * Higher Kinded Types
-* Variance
 * Context Bounds
 * Bonus: Type Constraints
 
@@ -37,16 +33,29 @@ class Stack[T] {
 }
 ```
 
-## Type Bounds
-```scala
-def f[T <: Comparable](t: T) = ???
-```
-
 ## Variance
 * Subtyping relationship of a "container" class varying with the subtyping relationship of a "contained" class.
 * Covariance is marked with _+_ (_out_ in other languages)
 * Contravariance is marked with _-_ (_in_ in other languages)
-* "Contravariance" "Consumes" 
+* "Contravariance" "Consumes"
+* _Variance is only applicable to classes and traits not to functions!_
+
+
+## Type Bounds
+```scala
+def f[T <: Comparable[T]](t: T) = ???
+def f[T >: Comparable[T]](t: T) = ???
+```
+In Java ```<:``` corresponds to ```extends```.
+
+```java
+public <T extends Comparable<T>> void f(T t) {}
+```
+
+| Name | Syntax | Semantics |
+| --- | --- | --- |
+| upper bound |```A <: B```  | ```A``` is a subtype of ```B```
+| lower bound |```A >: B```  | ```A``` is a supertype of ```B```
 
 #### Variance vs Bounds
 Bounds: Useful when you want to be generic but require a certain set of methods
@@ -64,15 +73,7 @@ Variance: Useful when you want to make a collections that behave the same way as
 
 
 #### Good sources
-Type related features in Scala:
-http://ktoso.github.io/scala-types-of-types/
-
-Type Constraints:
-http://blog.bruchez.name/2015/11/generalized-type-constraints-in-scala.html
-
-Value Classes:
-https://docs.scala-lang.org/overviews/core/value-classes.html
-
-trait Animal
-class Mammal extends Animal
-class Zebra extends Mammal
+* [Type related features in Scala](http://ktoso.github.io/scala-types-of-types/)
+* [Long and easy to understand article about variance in Java and Scala](https://medium.com/@sinisalouc/variance-in-java-and-scala-63af925d21dc)
+* [Type Constraints](http://blog.bruchez.name/2015/11/generalized-type-constraints-in-scala.html)
+* [Value Classes](https://docs.scala-lang.org/overviews/core/value-classes.html)
