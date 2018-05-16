@@ -9,24 +9,25 @@ import scala.util.{Success, Try}
 
 object Main {
   def main(args: Array[String]): Unit = {
-    def futureFn = {
+    def futureFn =
       Future {
-        throw new Exception("Something bad")
+        throw new Exception("Something bad in Future")
         123
       }
-    }
 
-    def normalFunction = {
-//
+    def tryFunction =
       Try {
-        throw new Exception("Something bad")
+        throw new Exception("Something bad in Try")
         123123
       }
-    }
 
-    val asd = retry(4)(normalFunction)
+    val tryRes = retry(4)(tryFunction)
+    println(tryRes)
 
-    println(asd)
-//    println(Await.result(asd, 1.minute))
+    val futureRes = retry(4)(futureFn)
+
+    // Note: Await.result throws the exception which was in the Future's Failure
+    // It transforms the Try semantics inside Future to a result this way.
+    println(Try(Await.result(futureRes, 1.minute)))
   }
 }
