@@ -1,10 +1,11 @@
-package example
+package retry
 
-import retry.Retry._
+import Retry._
 
-import scala.concurrent.{Await, Future }
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Success, Try}
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -15,9 +16,12 @@ object Main {
       }
     }
 
-    def normalFunction: Id[Int] = {
-//      throw new Exception("We r fuk'd")
-      123123
+    def normalFunction = {
+//
+      Try {
+        throw new Exception("We r fuk'd")
+        123123
+      }
     }
 
     val asd = retry(4)(normalFunction)
@@ -26,4 +30,3 @@ object Main {
 //    println(Await.result(asd, 1.minute))
   }
 }
-

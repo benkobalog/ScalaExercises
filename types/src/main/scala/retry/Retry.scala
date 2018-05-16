@@ -15,16 +15,12 @@ object Retry {
     r.retry(times)(a)
   }
 
-  implicit val idRetry: Retry[Id] = new Retry[Id] {
-    override def retry[T](times: Int)(a: => Id[T]): Id[T] = {
-      Try(a) match {
-        case Success(res) =>
-          println("Success \\o/")
-          res
-        case Failure(res) =>
+  implicit val idRetry: Retry[Try] = new Retry[Try] {
+    override def retry[T](times: Int)(a: => Try[T]): Try[T] = {
+      a.recoverWith {
+        case _ if times > 0 =>
           println("retry " + times)
-          if(times < 1) throw res
-          else retry(times - 1)(a)
+          retry(times - 1)(a)
       }
     }
   }
@@ -32,12 +28,12 @@ object Retry {
   implicit val futureRetry: Retry[Future] = new Retry[Future] {
     import scala.concurrent.ExecutionContext.Implicits.global
     override def retry[T](times: Int)(a: => Future[T]): Future[T] = {
-      a.recoverWith{ case _ if times > 0 =>
-        println("retry " + times)
-        retry(times - 1)(a)
+      a.recoverWith {
+        case _ if times > 0 =>
+          println("retry " + times)
+          retry(times - 1)(a)
       }
     }
   }
 
 }
-
